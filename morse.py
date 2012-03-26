@@ -1,4 +1,4 @@
-import pymcu
+#import pymcu
 import time
 
 
@@ -11,10 +11,10 @@ class Morse(object):
     #mb = pymcu.mcuModule()
 
     alphabet = {
-        ' ': [WORD_SPACE],
         'a': [DOT, DASH],
         'b': [DASH, DOT, DOT],
         'c': [DASH, DOT, DASH, DOT],
+        'd': [DASH, DOT, DOT],
         'e': [DOT],
         'f': [DOT, DOT, DASH, DOT],
         'g': [DASH, DASH, DOT],
@@ -50,22 +50,34 @@ class Morse(object):
     }
 
     def __init__(self, word):
-        for char in word:
-            self.light_on(self.alphabet[char])
+        for index, char in enumerate(word):
+            char = char.lower()
+            if char != " ":
+                try:
+                    if word[index + 1] != " ":
+                        self.light_on(self.alphabet[char], False)
+                    else:
+                        self.light_on(self.alphabet[char], True)
+                except:
+                    print "the final char is {0}".format(char)
+                    self.light_on(self.alphabet[char], True)
+            else:
+                continue
 
-    def light_on(self, code):
+    def light_on(self, code, end_of_word):
         for index, duration in enumerate(code):
-            #self.mb.pinHigh(1)
-            #time.sleep(duration)
-            #self.mb.pinLow(1)
-            print duration
+            self.mb.pinHigh(1)
+            time.sleep(duration)
+            self.mb.pinLow(1)
 
             try:
-                code[index + 1]
-                print self.LETTER_SPACE
-                #time.sleep(self.LETTER_SPACE)
+                if code[index + 1]:
+                    time.sleep(self.LETTER_SPACE)
             except:
-                print self.DASH
-                #time.sleep(self.DASH)
+                if end_of_word:
+                    time.sleep(self.WORD_SPACE)
+                else:
+                    time.sleep(self.DASH)
 
-m = Morse("ab")
+
+m = Morse("i love food")
