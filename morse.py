@@ -1,4 +1,4 @@
-#import pymcu
+import pymcu
 import time
 
 
@@ -8,7 +8,7 @@ class Morse(object):
     LETTER_SPACE = DOT
     WORD_SPACE = DOT * 7
 
-    #mb = pymcu.mcuModule()
+    mb = pymcu.mcuModule()
 
     alphabet = {
         'a': [DOT, DASH],
@@ -59,7 +59,6 @@ class Morse(object):
                     else:
                         self.light_on(self.alphabet[char], True)
                 except:
-                    print "the final char is {0}".format(char)
                     self.light_on(self.alphabet[char], True)
             else:
                 continue
@@ -80,4 +79,4 @@ class Morse(object):
                     time.sleep(self.DASH)
 
 
-m = Morse("i love food")
+m = Morse("It Worked")
