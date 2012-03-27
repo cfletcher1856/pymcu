@@ -47,6 +47,24 @@ class Morse(object):
         '7': [DASH, DASH, DOT, DOT, DOT],
         '8': [DASH, DASH, DASH, DOT, DOT],
         '9': [DASH, DASH, DASH, DASH, DOT],
+        '.': [DOT, DASH, DOT, DASH, DOT, DASH],
+        ',': [DASH, DASH, DOT, DOT, DASH, DASH],
+        '?': [DOT, DOT, DASH, DASH, DOT, DOT],
+        "'": [DOT, DASH, DASH, DASH, DASH, DOT],
+        '!': [DASH, DOT, DASH, DOT, DASH, DASH],
+        '/': [DASH, DOT, DOT, DASH, DOT],
+        '(': [DASH, DOT, DASH, DASH, DOT],
+        ')': [DASH, DOT, DASH, DASH, DOT, DASH],
+        '&': [DOT, DASH, DOT, DOT, DOT],
+        ':': [DASH, DASH, DASH, DOT, DOT, DOT],
+        ';': [DASH, DOT, DASH, DOT, DASH, DOT],
+        '=': [DASH, DOT, DOT, DOT, DASH],
+        '+': [DOT, DASH, DOT, DASH, DOT],
+        '-': [DASH, DOT, DOT, DOT, DOT, DASH],
+        '_': [DOT, DOT, DASH, DASH, DOT, DASH],
+        '"': [DOT, DASH, DOT, DOT, DASH, DOT],
+        '$': [DOT, DOT, DOT, DASH, DOT, DOT, DASH],
+        '@': [DOT, DASH, DASH, DOT, DASH, DOT],
     }
 
     def __init__(self, word):
@@ -54,12 +72,16 @@ class Morse(object):
             char = char.lower()
             if char != " ":
                 try:
-                    if word[index + 1] != " ":
-                        self.light_on(self.alphabet[char], False)
-                    else:
+                    try:
+                        if word[index + 1] != " ":
+                            self.light_on(self.alphabet[char], False)
+                        else:
+                            self.light_on(self.alphabet[char], True)
+                    except:
                         self.light_on(self.alphabet[char], True)
-                except:
-                    self.light_on(self.alphabet[char], True)
+                except KeyError:
+                    print "This char has not been implemented yet {0}".format(char)
+                    continue
             else:
                 continue
 
@@ -79,4 +101,4 @@ class Morse(object):
                     time.sleep(self.DASH)
 
 
-m = Morse("It Worked")
+m = Morse("* Colin")
