@@ -5,7 +5,8 @@ import time
 class Morse(object):
     DOT = 0.25
     DASH = DOT * 3
-    LETTER_SPACE = DOT
+    SYMBOL_SPACE = DOT
+    LETTER_SPACE = DASH
     WORD_SPACE = DOT * 7
 
     mb = pymcu.mcuModule()
@@ -68,37 +69,33 @@ class Morse(object):
     }
 
     def __init__(self, word):
-        for index, char in enumerate(word):
+        word_len = len(word)
+        for ctr, char in enumerate(word, start=1):
             char = char.lower()
             if char != " ":
                 try:
-                    try:
-                        if word[index + 1] != " ":
-                            self.light_on(self.alphabet[char], False)
-                        else:
-                            self.light_on(self.alphabet[char], True)
-                    except:
+                    if ctr < word_len and word[ctr] != " ":
+                        self.light_on(self.alphabet[char], False)
+                    else:
                         self.light_on(self.alphabet[char], True)
                 except KeyError:
                     print "This char has not been implemented yet {0}".format(char)
-                    continue
-            else:
-                continue
+                    return
 
     def light_on(self, code, end_of_word):
-        for index, duration in enumerate(code):
+        code_len = len(code)
+        for ctr, duration in enumerate(code, start=1):
             self.mb.pinHigh(1)
             time.sleep(duration)
             self.mb.pinLow(1)
 
-            try:
-                if code[index + 1]:
-                    time.sleep(self.LETTER_SPACE)
-            except:
-                if end_of_word:
-                    time.sleep(self.WORD_SPACE)
-                else:
-                    time.sleep(self.DASH)
+            if ctr < code_len:
+                time.sleep(self.SYMBOL_SPACE)
+
+        if end_of_word:
+            time.sleep(self.WORD_SPACE)
+        else:
+            time.sleep(self.LETTER_SPACE)
 
 
-m = Morse("* Colin")
+m = Morse("Morse Code!!")
