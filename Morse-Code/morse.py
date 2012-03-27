@@ -1,9 +1,9 @@
 import pymcu
-import time
+from time import sleep
 
 
 class Morse(object):
-    DOT = 0.25
+    DOT = 1
     DASH = DOT * 3
     SYMBOL_SPACE = DOT
     LETTER_SPACE = DASH
@@ -68,7 +68,8 @@ class Morse(object):
         '@': [DOT, DASH, DASH, DOT, DASH, DOT],
     }
 
-    def __init__(self, word):
+    def __init__(self, word, wpm=13):
+        self.speed = (1200 / wpm) / 1000.0
         word_len = len(word)
         for ctr, char in enumerate(word, start=1):
             char = char.lower()
@@ -86,16 +87,16 @@ class Morse(object):
         code_len = len(code)
         for ctr, duration in enumerate(code, start=1):
             self.mb.pinHigh(1)
-            time.sleep(duration)
+            sleep(duration * self.speed)
             self.mb.pinLow(1)
 
             if ctr < code_len:
-                time.sleep(self.SYMBOL_SPACE)
+                sleep(self.SYMBOL_SPACE * self.speed)
 
         if end_of_word:
-            time.sleep(self.WORD_SPACE)
+            sleep(self.WORD_SPACE * self.speed)
         else:
-            time.sleep(self.LETTER_SPACE)
+            sleep(self.LETTER_SPACE * self.speed)
 
 
 m = Morse("Morse Code!!")
