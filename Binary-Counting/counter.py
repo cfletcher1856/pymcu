@@ -12,15 +12,10 @@ count = 0
 try:
     while True:
         for (pin, value) in zip(pins, [int(count & (1 << n) > 0) for n in range(num_of_pins)]):
-            high = []
-            low = []
             if value:
-                high.append(pin)
+                mb.pinHigh(pin)
             else:
-                low.append(pin)
-
-            mb.pinHigh(high)
-            mb.pinLow(low)
+                mb.pinLow(pin)
 
         sleep(0.5)
         count = (count + 1) % 256
