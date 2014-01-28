@@ -1,8 +1,8 @@
 argparse==1.2.1
-distribute==0.6.24
-ipython==0.12.1
-pymcu==1.0.7
-pyserial==2.6
-pywapi==0.2.2
+distribute==0.7.3
+ipython==1.1.0
+pymcu==1.0.14
+pyserial==2.7
+pywapi==0.3.7
 wsgiref==0.1.2
 yolk==0.4.3
